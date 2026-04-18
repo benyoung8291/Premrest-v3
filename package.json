@@ -1,0 +1,41 @@
+{
+  "name": "premrest-v3",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "convert:html": "tsx scripts/convert-html-to-jsx.ts",
+    "import:cms": "tsx scripts/import-csv-to-sanity.ts"
+  },
+  "dependencies": {
+    "@portabletext/react": "^3.2.1",
+    "@sanity/client": "^6.22.5",
+    "@sanity/image-url": "^1.1.0",
+    "@sanity/vision": "^3.68.1",
+    "cheerio": "^1.0.0",
+    "csv-parse": "^5.6.0",
+    "groq": "^3.68.1",
+    "jsdom": "^25.0.1",
+    "next": "^14.2.18",
+    "next-sanity": "^9.8.31",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sanity": "^3.68.1",
+    "styled-components": "^6.1.13"
+  },
+  "devDependencies": {
+    "@sanity/block-tools": "^3.68.1",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^22.10.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.18",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

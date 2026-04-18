@@ -1,229 +1,268 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { PortableText, type PortableTextComponents } from '@portabletext/react';
+import type { Image, PortableTextBlock } from 'sanity';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
 import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import { resourceBySlugQuery, allResourcesQuery } from '@/lib/queries';
+import { safeFetch } from '@/lib/safeFetch';
+import { urlFor } from '@/lib/sanity.image';
 
-export const metadata: Metadata = {
-  title: "Premrest |",
-  openGraph: {
-    title: "Premrest |"
-  },
-  twitter: {
-    title: "Premrest |"
-  }
+export const revalidate = 60;
+
+type Author = {
+  name: string;
+  slug: string;
+  title?: string;
+  photo?: Image;
+  bio?: string;
 };
 
-const bodyHtml = `
-  <div class="page-wrapper">
-    <div class="global-styles w-embed">
-      <style>
-/* Make text look crisper and more legible in all browsers */
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+type Resource = {
+  _id: string;
+  name: string;
+  slug: string;
+  summary?: string;
+  content?: PortableTextBlock[];
+  featuredImage?: Image;
+  video?: string;
+  fileUpload?: { asset?: { _ref: string; url?: string } };
+  fileCoverImage?: Image;
+  category?: { name: string; slug: string };
+  contentType?: { name: string; slug: string };
+  authors?: Author[];
+};
+
+export async function generateStaticParams() {
+  const resources = await safeFetch<Array<{ slug: string }>>(
+    allResourcesQuery,
+    {},
+    [],
+  );
+  return resources.filter((r) => r.slug).map((r) => ({ slug: r.slug }));
 }
-/* Focus state style for keyboard navigation for the focusable elements */
-*[tabindex]:focus-visible,
-  input[type="file"]:focus-visible {
-   outline: 0.125rem solid #4d65ff;
-   outline-offset: 0.125rem;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const resource = await safeFetch<Resource | null>(
+    resourceBySlugQuery,
+    { slug },
+    null,
+  );
+  if (!resource) return { title: 'Premrest | Resource' };
+  const title = `Premrest | ${resource.name}`;
+  const image = resource.featuredImage
+    ? urlFor(resource.featuredImage).width(1200).url()
+    : undefined;
+  return {
+    title,
+    description: resource.summary,
+    openGraph: {
+      title,
+      description: resource.summary,
+      ...(image ? { images: [image] } : {}),
+    },
+    twitter: {
+      title,
+      description: resource.summary,
+      ...(image ? { images: [image] } : {}),
+    },
+  };
 }
-/* Set color style to inherit */
-.inherit-color * {
-    color: inherit;
-}
-/* Get rid of top margin on first element in any rich text element */
-.w-richtext > :not(div):first-child, .w-richtext > div:first-child > :first-child {
-  margin-top: 0 !important;
-}
-/* Get rid of bottom margin on last element in any rich text element */
-.w-richtext>:last-child, .w-richtext ol li:last-child, .w-richtext ul li:last-child {
-	margin-bottom: 0 !important;
-}
-/* Make sure containers never lose their center alignment */
-.container-medium,.container-small, .container-large {
-	margin-right: auto !important;
-  margin-left: auto !important;
-}
-/* 
-Make the following elements inherit typography styles from the parent and not have hardcoded values. 
-Important: You will not be able to style for example "All Links" in Designer with this CSS applied.
-Uncomment this CSS to use it in the project. Leave this message for future hand-off.
-*/
-/*
-a,
-.w-input,
-.w-select,
-.w-tab-link,
-.w-nav-link,
-.w-dropdown-btn,
-.w-dropdown-toggle,
-.w-dropdown-link {
-  color: inherit;
-  text-decoration: inherit;
-  font-size: inherit;
-}
-*/
-/* Apply "..." after 3 lines of text */
-.text-style-3lines {
-	display: -webkit-box;
-	overflow: hidden;
-	-webkit-line-clamp: 3;
-	-webkit-box-orient: vertical;
-}
-/* Apply "..." after 2 lines of text */
-.text-style-2lines {
-	display: -webkit-box;
-	overflow: hidden;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-}
-/* These classes are never overwritten */
-.hide {
-  display: none !important;
-}
-@media screen and (max-width: 991px) {
-    .hide, .hide-tablet {
-        display: none !important;
-    }
-}
-  @media screen and (max-width: 767px) {
-    .hide-mobile-landscape{
-      display: none !important;
-    }
-}
-  @media screen and (max-width: 479px) {
-    .hide-mobile{
-      display: none !important;
-    }
-}
-.margin-0 {
-  margin: 0rem !important;
-}
-.padding-0 {
-  padding: 0rem !important;
-}
-.spacing-clean {
-padding: 0rem !important;
-margin: 0rem !important;
-}
-.margin-top {
-  margin-right: 0rem !important;
-  margin-bottom: 0rem !important;
-  margin-left: 0rem !important;
-}
-.padding-top {
-  padding-right: 0rem !important;
-  padding-bottom: 0rem !important;
-  padding-left: 0rem !important;
-}
-.margin-right {
-  margin-top: 0rem !important;
-  margin-bottom: 0rem !important;
-  margin-left: 0rem !important;
-}
-.padding-right {
-  padding-top: 0rem !important;
-  padding-bottom: 0rem !important;
-  padding-left: 0rem !important;
-}
-.margin-bottom {
-  margin-top: 0rem !important;
-  margin-right: 0rem !important;
-  margin-left: 0rem !important;
-}
-.padding-bottom {
-  padding-top: 0rem !important;
-  padding-right: 0rem !important;
-  padding-left: 0rem !important;
-}
-.margin-left {
-  margin-top: 0rem !important;
-  margin-right: 0rem !important;
-  margin-bottom: 0rem !important;
-}
-.padding-left {
-  padding-top: 0rem !important;
-  padding-right: 0rem !important;
-  padding-bottom: 0rem !important;
-}
-.margin-horizontal {
-  margin-top: 0rem !important;
-  margin-bottom: 0rem !important;
-}
-.padding-horizontal {
-  padding-top: 0rem !important;
-  padding-bottom: 0rem !important;
-}
-.margin-vertical {
-  margin-right: 0rem !important;
-  margin-left: 0rem !important;
-}
-.padding-vertical {
-  padding-right: 0rem !important;
-  padding-left: 0rem !important;
-}
-</style>
+
+const globalStylesHtml = `
+  <div class="global-styles w-embed">
+    <style>
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-smoothing:antialiased;text-rendering:optimizeLegibility}*[tabindex]:focus-visible,input[type="file"]:focus-visible{outline:.125rem solid #4d65ff;outline-offset:.125rem}.inherit-color *{color:inherit}.w-richtext > :not(div):first-child,.w-richtext > div:first-child > :first-child{margin-top:0 !important}.w-richtext>:last-child,.w-richtext ol li:last-child,.w-richtext ul li:last-child{margin-bottom:0 !important}.container-medium,.container-small,.container-large{margin-right:auto !important;margin-left:auto !important}.text-style-3lines{display:-webkit-box;overflow:hidden;-webkit-line-clamp:3;-webkit-box-orient:vertical}.text-style-2lines{display:-webkit-box;overflow:hidden;-webkit-line-clamp:2;-webkit-box-orient:vertical}.hide{display:none !important}@media screen and (max-width:991px){.hide,.hide-tablet{display:none !important}}@media screen and (max-width:767px){.hide-mobile-landscape{display:none !important}}@media screen and (max-width:479px){.hide-mobile{display:none !important}}
+    </style>
+  </div>
+`;
+
+const podcastLinksHtml = `
+  <div class="grid-column ltf-block-resources">
+    <p><strong>Subscribe to the Let's Talk Facilities podcast.</strong></p>
+    <div class="podcast-logos">
+      <a href="https://podcasts.apple.com/us/podcast/lets-talk-facilities/id1794530719" target="_blank" class="podcast-link w-inline-block"><img src="/images/Apple.webp" loading="lazy" alt="" class="podcast-logo"></a>
+      <a href="https://www.youtube.com/@premrest" target="_blank" class="podcast-link w-inline-block"><img src="/images/YouTube.webp" loading="lazy" alt="" class="podcast-logo"></a>
+      <a href="https://open.spotify.com/show/7bO9C0xjbrc5sYduBnJHHv?si=7c0c7e6877154f3e" target="_blank" class="podcast-link w-inline-block"><img src="/images/Spotify.webp" loading="lazy" alt="" class="podcast-logo"></a>
+      <a href="https://youtube.com/playlist?list=PLMLI27bMPtHrw4TgptEyP8nRlmCutCFUS" target="_blank" class="podcast-link w-inline-block"><img src="/images/YT-Music.webp" loading="lazy" alt="" class="podcast-logo"></a>
     </div>
-    
-    <div class="main-wrapper">
-      <div class="resources-template-header background-color-primary">
-        <div class="padding-global padding-section-large resources-template-padding-header">
-          <div class="container-xlarge"></div>
-        </div>
-      </div>
-      <div class="resources-content-section">
-        <div class="padding-global padding-section-large padding-resources-template">
-          <div class="container-large">
-            <div class="grid-wrapper resources-template-container">
-              <div id="w-node-_3a87bce3-f797-6dec-208f-854f67253443-8e1f844a" class="grid-column resources-template-image-container">
-                <div class="resources-template-image-container"><img loading="lazy" src="/images/Hot-Black-Kraft-Heinz_6299-1000x1500.webp" alt="" class="resources-template-image w-dyn-bind-empty"><img loading="lazy" src="/images/Premrest_Scribble_Green.svg" alt="" class="home-resources-scribbles"><img loading="lazy" src="/images/Premrest_Patch_Cream.svg" alt="" class="home-resources-patch"></div>
-              </div>
-              <div class="grid-column resources-template-title-container">
-                <div class="resources-template-header-container">
-                  <div class="content-badges-container-section">
-                    <div class="content-badge-service">
-                      <h6 fs-cmsfilter-field="*" class="content-service-heading w-dyn-bind-empty"></h6>
-                    </div>
-                    <div class="content-badge-type">
-                      <h6 fs-cmsfilter-field="contents" class="content-type-heading w-dyn-bind-empty"></h6>
+  </div>
+`;
+
+const portableTextComponents: PortableTextComponents = {
+  types: {
+    image: ({ value }: { value: Image }) => (
+      <img
+        src={urlFor(value).width(1200).url()}
+        alt=""
+        loading="lazy"
+        style={{ maxWidth: '100%', height: 'auto' }}
+      />
+    ),
+  },
+};
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const resource = await safeFetch<Resource | null>(
+    resourceBySlugQuery,
+    { slug },
+    null,
+  );
+
+  if (!resource) notFound();
+
+  const downloadUrl = resource.fileUpload?.asset?.url;
+  const heroImage = resource.featuredImage
+    ? urlFor(resource.featuredImage).width(1500).url()
+    : null;
+
+  return (
+    <WebflowPage bodyClass="">
+      <div className="page-wrapper">
+        <WebflowHtml html={globalStylesHtml} />
+        <div className="main-wrapper">
+          <div className="resources-template-header background-color-primary">
+            <div className="padding-global padding-section-large resources-template-padding-header">
+              <div className="container-xlarge"></div>
+            </div>
+          </div>
+          <div className="resources-content-section">
+            <div className="padding-global padding-section-large padding-resources-template">
+              <div className="container-large">
+                <div className="grid-wrapper resources-template-container">
+                  <div className="grid-column resources-template-image-container">
+                    <div className="resources-template-image-container">
+                      {heroImage ? (
+                        <img
+                          loading="lazy"
+                          src={heroImage}
+                          alt={resource.name}
+                          className="resources-template-image"
+                        />
+                      ) : null}
+                      <img
+                        loading="lazy"
+                        src="/images/Premrest_Scribble_Green.svg"
+                        alt=""
+                        className="home-resources-scribbles"
+                      />
+                      <img
+                        loading="lazy"
+                        src="/images/Premrest_Patch_Cream.svg"
+                        alt=""
+                        className="home-resources-patch"
+                      />
                     </div>
                   </div>
-                  <h2 class="resources-template-heading w-dyn-bind-empty"></h2>
-                  <div class="w-dyn-list">
-                    <div role="list" class="resource-template-authors w-dyn-items">
-                      <div role="listitem" class="resource-template-items w-dyn-item">
-                        <div class="resources-author-container"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="resources-author-image w-dyn-bind-empty">
-                          <div>
-                            <h6 class="resources-author-name w-dyn-bind-empty"></h6>
-                            <h6 class="resources-author-title w-dyn-bind-empty"></h6>
+                  <div className="grid-column resources-template-title-container">
+                    <div className="resources-template-header-container">
+                      <div className="content-badges-container-section">
+                        {resource.category ? (
+                          <div className="content-badge-service">
+                            <h6 className="content-service-heading">
+                              {resource.category.name}
+                            </h6>
                           </div>
-                        </div>
+                        ) : null}
+                        {resource.contentType ? (
+                          <div className="content-badge-type">
+                            <h6 className="content-type-heading">
+                              {resource.contentType.name}
+                            </h6>
+                          </div>
+                        ) : null}
                       </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
+                      <h2 className="resources-template-heading">
+                        {resource.name}
+                      </h2>
+                      {resource.authors && resource.authors.length > 0 ? (
+                        <div className="resource-template-authors">
+                          {resource.authors.map((author) => (
+                            <div
+                              key={author.slug}
+                              className="resource-template-items"
+                            >
+                              <div className="resources-author-container">
+                                {author.photo ? (
+                                  <img
+                                    src={urlFor(author.photo).width(200).url()}
+                                    loading="lazy"
+                                    alt={author.name}
+                                    className="resources-author-image"
+                                  />
+                                ) : null}
+                                <div>
+                                  <h6 className="resources-author-name">
+                                    {author.name}
+                                  </h6>
+                                  {author.title ? (
+                                    <h6 className="resources-author-title">
+                                      {author.title}
+                                    </h6>
+                                  ) : null}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="grid-wrapper">
-              <div class="grid-1-column">
-                <div class="grid-column resources-content-container">
-                  <h6 class="resources-content-date w-dyn-bind-empty"></h6>
-                  <p class="text-size-large resources-content-summary w-dyn-bind-empty"></p>
-                  <div class="resources-video w-dyn-bind-empty w-video w-embed"></div>
-                  <div class="grid-column w-dyn-bind-empty w-richtext"></div>
-                  <a href="#" id="file-download" class="button w-node-a56c2161-b855-7400-15bd-a806c6de94da-8e1f844a w-button">Download</a>
-                  <div class="grid-column ltf-block-resources">
-                    <p><strong>Subscribe to the Let's Talk Facilities podcast.</strong></p>
-                    <div class="podcast-logos">
-                      <a href="https://podcasts.apple.com/us/podcast/lets-talk-facilities/id1794530719" target="_blank" class="podcast-link w-inline-block"><img src="/images/Apple.webp" loading="lazy" sizes="100vw" srcset="/images/Apple-p-500.webp 500w, images/Apple-p-800.webp 800w, images/Apple-p-1080.webp 1080w, images/Apple-p-1600.webp 1600w, images/Apple.webp 2000w" alt="" class="podcast-logo"></a>
-                      <a href="https://www.youtube.com/@premrest" target="_blank" class="podcast-link w-inline-block"><img src="/images/YouTube.webp" loading="lazy" sizes="100vw" srcset="/images/YouTube-p-500.webp 500w, images/YouTube-p-800.webp 800w, images/YouTube-p-1080.webp 1080w, images/YouTube-p-1600.webp 1600w, images/YouTube.webp 2000w" alt="" class="podcast-logo"></a>
-                      <a href="https://open.spotify.com/show/7bO9C0xjbrc5sYduBnJHHv?si=7c0c7e6877154f3e" target="_blank" class="podcast-link w-inline-block"><img src="/images/Spotify.webp" loading="lazy" sizes="100vw" srcset="/images/Spotify-p-500.webp 500w, images/Spotify-p-800.webp 800w, images/Spotify-p-1080.webp 1080w, images/Spotify-p-1600.webp 1600w, images/Spotify.webp 2000w" alt="" class="podcast-logo"></a>
-                      <a href="https://youtube.com/playlist?list=PLMLI27bMPtHrw4TgptEyP8nRlmCutCFUS&amp;si=2_NXJlnmYkGmK0BB" target="_blank" class="podcast-link w-inline-block"><img src="/images/YT-Music.webp" loading="lazy" sizes="100vw" srcset="/images/YT-Music-p-500.webp 500w, images/YT-Music-p-800.webp 800w, images/YT-Music-p-1080.webp 1080w, images/YT-Music-p-1600.webp 1600w, images/YT-Music.webp 2000w" alt="" class="podcast-logo"></a>
+                <div className="grid-wrapper">
+                  <div className="grid-1-column">
+                    <div className="grid-column resources-content-container">
+                      {resource.summary ? (
+                        <p className="text-size-large resources-content-summary">
+                          {resource.summary}
+                        </p>
+                      ) : null}
+                      {resource.video ? (
+                        <div className="resources-video w-embed">
+                          <iframe
+                            src={resource.video}
+                            title={resource.name}
+                            loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            style={{
+                              width: '100%',
+                              aspectRatio: '16 / 9',
+                              border: 0,
+                            }}
+                          />
+                        </div>
+                      ) : null}
+                      {resource.content && resource.content.length > 0 ? (
+                        <div className="grid-column w-richtext">
+                          <PortableText
+                            value={resource.content}
+                            components={portableTextComponents}
+                          />
+                        </div>
+                      ) : null}
+                      {downloadUrl ? (
+                        <a
+                          href={downloadUrl}
+                          id="file-download"
+                          className="button w-button"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Download
+                        </a>
+                      ) : null}
+                      <WebflowHtml html={podcastLinksHtml} />
                     </div>
                   </div>
                 </div>
@@ -232,20 +271,6 @@ margin: 0rem !important;
           </div>
         </div>
       </div>
-      
-    </div>
-  </div>
-  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=675661387278edf4cf92de17" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-  <script src="/js/webflow.js" type="text/javascript"></script><!--  Google Tag Manager (noscript)  -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-57VKP3XQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!--  End Google Tag Manager (noscript)  -->
-
-`;
-
-export default function Page() {
-  return (
-    <WebflowPage bodyClass="" >
-      <WebflowHtml html={bodyHtml} />
     </WebflowPage>
   );
 }

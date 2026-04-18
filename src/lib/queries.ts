@@ -25,7 +25,7 @@ export const resourceBySlugQuery = groq`
     content,
     featuredImage,
     video,
-    fileUpload,
+    "fileUpload": fileUpload{ asset-> { url, originalFilename } },
     fileCoverImage,
     category->{name, "slug": slug.current, icon},
     contentType->{name, "slug": slug.current},

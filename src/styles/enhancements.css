@@ -1,0 +1,327 @@
+/* ==========================================================================
+   Premrest design enhancements
+   -----------------------------
+   Additive layer on top of the Webflow-exported theme (loaded via
+   app/layout.tsx). Every rule here is scoped so it cannot override Webflow
+   component visuals — it only adds micro-interactions, scroll-reveal,
+   accessibility polish, and page-transition fades. All motion is gated behind
+   `prefers-reduced-motion: no-preference` (`@media (prefers-reduced-motion)`
+   resets everything below to the non-animated state).
+   ========================================================================== */
+
+/* Custom easing curves once, reused everywhere. */
+:root {
+  --pr-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --pr-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --pr-reveal-distance: 1.25rem;
+  --pr-reveal-duration: 720ms;
+  --pr-micro-duration: 220ms;
+}
+
+/* Smooth scroll + better font rendering. Webflow sets html { scroll-behavior }
+   to auto; we upgrade to smooth only when the user is OK with motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility: skip link + focus-visible polish
+   -------------------------------------------------------------------------- */
+
+.skip-to-content {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1000;
+  padding: 0.625rem 1rem;
+  background: #2e3133;
+  color: #fbf7f3;
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transform: translateY(calc(-100% - 1rem));
+  transition: transform 160ms var(--pr-ease-out);
+}
+.skip-to-content:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid #4d65ff;
+  outline-offset: 2px;
+}
+
+/* Slightly richer, more visible focus ring on interactive elements, without
+   overriding Webflow's own states. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role='button']:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #4d65ff;
+  outline-offset: 3px;
+  border-radius: 4px;
+  transition: outline-offset 120ms var(--pr-ease-out);
+}
+
+/* Nice text selection colour aligned with the brand. */
+::selection {
+  background: rgba(209, 112, 60, 0.28);
+  color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   Micro-interactions — additive hover polish
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Webflow's primary buttons already have a hover; this just eases it and
+     adds a tiny lift. Keyed to Webflow's class names so it stays scoped. */
+  .w-button,
+  .button,
+  .button-4 {
+    transition:
+      transform var(--pr-micro-duration) var(--pr-ease-out),
+      box-shadow var(--pr-micro-duration) var(--pr-ease-out),
+      background-color var(--pr-micro-duration) var(--pr-ease-out),
+      color var(--pr-micro-duration) var(--pr-ease-out),
+      opacity var(--pr-micro-duration) var(--pr-ease-out);
+    will-change: transform;
+  }
+  .w-button:hover,
+  .button:hover,
+  .button-4:hover {
+    transform: translateY(-2px);
+  }
+  .w-button:active,
+  .button:active,
+  .button-4:active {
+    transform: translateY(0);
+    transition-duration: 80ms;
+  }
+
+  /* "We work with..." role cards — arrow nudge + subtle card lift. */
+  .weworkwith-links {
+    transition: transform 280ms var(--pr-ease-out), box-shadow 280ms var(--pr-ease-out);
+  }
+  .weworkwith-links:hover {
+    transform: translateY(-4px);
+  }
+  .weworkwith-arrow {
+    transition: transform 280ms var(--pr-ease-out);
+  }
+  .weworkwith-links:hover .weworkwith-arrow {
+    transform: translateX(6px);
+  }
+
+  /* Services cards — gentle zoom on the inner image, brightness bump. */
+  .services-links .services-image,
+  .services-cards .services-image {
+    transition: transform 600ms var(--pr-ease-out), filter 600ms var(--pr-ease-out);
+    will-change: transform;
+  }
+  .services-links:hover .services-image,
+  .services-cards:hover .services-image {
+    transform: scale(1.04);
+    filter: saturate(1.05);
+  }
+
+  /* Resource / case-study card lift. Scoped to known Webflow classes. */
+  .resource_card,
+  .resource-card,
+  .case-studies-card,
+  .ltf-episode-card,
+  .letstalkfacilities-section-video {
+    transition: transform 320ms var(--pr-ease-out), box-shadow 320ms var(--pr-ease-out);
+  }
+  .resource_card:hover,
+  .resource-card:hover,
+  .case-studies-card:hover,
+  .ltf-episode-card:hover,
+  .letstalkfacilities-section-video:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Testimonial rays/patches — slow ambient drift that is decorative only. */
+  .testimonial-rays,
+  .testimonial-patch,
+  .hero-heading-rays,
+  .hero-heading-patch,
+  .hero-heading-scribble {
+    animation: pr-float 9s var(--pr-ease-in-out) infinite alternate;
+  }
+  .testimonial-patch,
+  .hero-heading-scribble {
+    animation-duration: 11s;
+    animation-delay: 1.2s;
+  }
+
+  /* Nav links underline micro-animation (doesn't touch Webflow colours). */
+  .nav_menu_link,
+  .nav_link,
+  .nav-link,
+  .footer_link {
+    position: relative;
+    transition: color var(--pr-micro-duration) var(--pr-ease-out);
+  }
+  .nav_menu_link::after,
+  .nav_link::after,
+  .nav-link::after,
+  .footer_link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 1.5px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 260ms var(--pr-ease-out);
+    pointer-events: none;
+    opacity: 0.8;
+  }
+  .nav_menu_link:hover::after,
+  .nav_link:hover::after,
+  .nav-link:hover::after,
+  .footer_link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  /* Podcast platform icons — bump + colour pop. */
+  .podcast-logo,
+  .podcast-link {
+    transition: transform 260ms var(--pr-ease-out), filter 260ms var(--pr-ease-out);
+  }
+  .podcast-link:hover .podcast-logo,
+  .podcast-link:hover {
+    transform: scale(1.08);
+  }
+
+  /* Logo rotator — soft opacity pulse on hover pause (doesn't touch anim). */
+  .logo-slider-img {
+    transition: opacity 260ms var(--pr-ease-out), transform 260ms var(--pr-ease-out);
+  }
+  .logo-slider-img:hover {
+    transform: scale(1.06);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Scroll-reveal utility — the PageTransitions component tags top-level
+   sections with [data-pr-reveal] on mount, then toggles .is-visible as each
+   section enters the viewport.
+   -------------------------------------------------------------------------- */
+
+[data-pr-reveal] {
+  opacity: 0;
+  transform: translateY(var(--pr-reveal-distance));
+  transition:
+    opacity var(--pr-reveal-duration) var(--pr-ease-out),
+    transform var(--pr-reveal-duration) var(--pr-ease-out);
+  will-change: opacity, transform;
+}
+[data-pr-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Respect users who don't want motion — no fade, no slide, no drift. */
+@media (prefers-reduced-motion: reduce) {
+  [data-pr-reveal],
+  [data-pr-reveal].is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .testimonial-rays,
+  .testimonial-patch,
+  .hero-heading-rays,
+  .hero-heading-patch,
+  .hero-heading-scribble {
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Page transitions — fade & rise on route change.
+
+   PageTransitions toggles [data-pr-route-enter] on its wrapper every time
+   the pathname changes. Chrome/Edge will use the native View Transitions API
+   when available (see the @view-transition block below); older browsers fall
+   back to this CSS fade. Either path respects reduced-motion.
+   -------------------------------------------------------------------------- */
+
+[data-pr-route-wrapper] {
+  min-height: 100vh;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-pr-route-enter] {
+    animation: pr-route-in 520ms var(--pr-ease-out) both;
+  }
+}
+
+/* View Transitions API — a free upgrade for supporting browsers. */
+@supports (view-transition-name: none) {
+  ::view-transition-old(root) {
+    animation: pr-fade-out 220ms var(--pr-ease-in-out) forwards;
+  }
+  ::view-transition-new(root) {
+    animation: pr-fade-in 360ms var(--pr-ease-out) forwards;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none !important;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Keyframes
+   -------------------------------------------------------------------------- */
+
+@keyframes pr-route-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pr-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pr-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes pr-float {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
+  100% { transform: translate3d(0, -6px, 0) rotate(1.5deg); }
+}
+
+/* --------------------------------------------------------------------------
+   Print — hide decorative, transitional, and nav/footer chrome.
+   -------------------------------------------------------------------------- */
+
+@media print {
+  .skip-to-content,
+  [data-pr-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

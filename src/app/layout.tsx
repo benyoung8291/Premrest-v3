@@ -1,19 +1,119 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { htmlDataAttrs } from '@/components/webflow-chrome/html-attrs';
+import { PageTransitions } from '@/components/motion/PageTransitions';
 
 import '@/styles/globals.css';
+import '@/styles/enhancements.css';
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://premrest.com.au';
+const SITE_NAME = 'Premrest';
+const DEFAULT_TITLE = 'Premrest — Beautiful Commercial Flooring | Australia\u2019s Floor Care Experts';
+const DEFAULT_DESCRIPTION =
+  "Australia's go-to for commercial floor care \u2014 cleaning, installation and restoration for offices, facilities and multi-level projects. Sustainable, long-lasting, and backed by decades of expertise.";
+const DEFAULT_OG_IMAGE =
+  'https://cdn.prod.website-files.com/675661387278edf4cf92de17/6789cc06bafc481a657e1967_Home_FeaturedImage.jpg';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Premrest — Beautiful Flooring | Commercial Floor Experts',
+    default: DEFAULT_TITLE,
     template: '%s | Premrest',
   },
-  description:
-    "Australia's go-to for commercial floor care, cleaning and installing floors from small spaces to multi-level projects.",
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
+  generator: 'Next.js',
+  keywords: [
+    'commercial flooring Australia',
+    'commercial floor care',
+    'commercial carpet cleaning',
+    'floor installation',
+    'floor restoration',
+    'facility management flooring',
+    'sustainable commercial flooring',
+    'Premrest',
+  ],
+  authors: [{ name: 'Premrest', url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: 'Commercial Services',
+  referrer: 'origin-when-cross-origin',
+  formatDetection: { email: false, address: false, telephone: false },
+  alternates: {
+    canonical: '/',
+  },
   icons: {
     icon: '/images/favicon.png',
     apple: '/images/webclip.png',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_AU',
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: 'Premrest commercial flooring' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#FBF7F3' },
+    { media: '(prefers-color-scheme: dark)', color: '#2E3133' },
+  ],
+  colorScheme: 'light',
+  width: 'device-width',
+  initialScale: 1,
+};
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#organization`,
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/images/favicon.png`,
+  description: DEFAULT_DESCRIPTION,
+  email: 'office@premrest.com.au',
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  sameAs: [
+    'https://www.youtube.com/@premrest',
+    'https://open.spotify.com/show/7bO9C0xjbrc5sYduBnJHHv',
+    'https://podcasts.apple.com/us/podcast/lets-talk-facilities/id1794530719',
+  ],
+};
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: SITE_NAME,
+  description: DEFAULT_DESCRIPTION,
+  publisher: { '@id': `${SITE_URL}/#organization` },
+  inLanguage: 'en-AU',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: { '@type': 'EntryPoint', urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
+    'query-input': 'required name=search_term_string',
   },
 };
 
@@ -61,7 +161,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        {children}
+        <a href="#main-content" className="skip-to-content">Skip to content</a>
+        <PageTransitions>{children}</PageTransitions>
+
+        <script
+          id="ld-organization"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          id="ld-website"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
 
         <Script src="/js/webflow.js" strategy="afterInteractive" />
 

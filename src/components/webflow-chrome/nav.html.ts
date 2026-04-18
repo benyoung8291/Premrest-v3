@@ -41,7 +41,7 @@ export const navHtml = `<div class="nav_fixed">
               </div>
             </div>
             <div class="nav_block_logo">
-              <a href="/ aria-current="page" class="nav_brand w-nav-brand w--current">
+              <a href="/" aria-current="page" class="nav_brand w-nav-brand w--current">
                 <div class="logo logo-cream w-embed">
                   <!--?xml version="1.0" encoding="UTF-8"?-->
                   <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 223.7671322 34.5399933">

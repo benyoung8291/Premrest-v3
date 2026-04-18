@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
+import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import { CaseStudyFeatured } from '@/components/cms/CaseStudiesList';
+import { CaseStudyOthers } from '@/components/cms/CaseStudiesList';
 
 export const metadata: Metadata = {
   title: "Case Studies",
@@ -188,40 +191,7 @@ margin: 0rem !important;
         <div class="padding-global padding-section-large">
           <div class="container-large">
             <div class="grid-wrapper">
-              <div class="w-dyn-list">
-                <div role="list" class="w-dyn-items">
-                  <div role="listitem" class="w-dyn-item">
-                    <div class="grid-2-columns casestudies-feature">
-                      <div class="grid-column">
-                        <div id="w-node-_6bdd1030-85a6-64d5-6f31-f646dfc66d86-b3355a93" class="column-image-block"><img src="/images/Premrest_Industries_CommercialOffices.webp" loading="lazy" alt="" class="casestudies-feature-cover-image w-dyn-bind-empty"><img src="/images/Premrest_Scribble_Green.svg" loading="lazy" alt="" class="casestudies-image-scribble"><img src="/images/Premrest_Patch_Blue.svg" loading="lazy" alt="" class="casestudies-image-patch"></div>
-                      </div>
-                      <div class="grid-column">
-                        <div class="content-badge-service">
-                          <h6 fs-cmsfilter-field="*" class="casestudies-feature-badge">Latest Case Study</h6>
-                        </div>
-                        <h2 class="w-dyn-bind-empty"></h2>
-                        <p class="w-dyn-bind-empty"></p>
-                        <div class="w-dyn-list">
-                          <div role="list" class="w-dyn-items">
-                            <div role="listitem" class="w-dyn-item">
-                              <div class="resources-author-container casestudies-feature"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="resources-author-image w-dyn-bind-empty">
-                                <div>
-                                  <h6 class="resources-author-name w-dyn-bind-empty"></h6>
-                                  <h6 class="resources-author-title w-dyn-bind-empty"></h6>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <a id="file-download" href="#" class="button casestudies-feature-button w-node-_7ddc30f3-4ab5-05e6-b0b3-3c473cac498d-b3355a93 w-button">Download</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="w-dyn-empty">
-                  <div>No items found.</div>
-                </div>
-              </div>
+              <!--SANITY:caseStudyFeatured-->
             </div>
           </div>
         </div>
@@ -231,31 +201,7 @@ margin: 0rem !important;
           <div class="container-large">
             <div class="grid-wrapper">
               <h2 class="heading-5">Other case studies</h2>
-              <div class="w-dyn-list">
-                <div role="list" class="casestudies-other-columns w-dyn-items">
-                  <div role="listitem" class="w-dyn-item">
-                    <div class="grid-column">
-                      <div id="w-node-_65d86513-cc26-20f3-0864-77bd7040234f-b3355a93" class="column-image-block"><img src="/images/Premrest_Industries_CommercialOffices.webp" loading="lazy" alt="" class="casestudies-other-cover-image w-dyn-bind-empty"></div>
-                      <a id="file-download" href="#" class="button casestudies-feature-button w-node-_65d86513-cc26-20f3-0864-77bd7040235e-b3355a93 w-button">Download</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="w-dyn-empty">
-                  <div>No items found.</div>
-                </div>
-                <div role="navigation" aria-label="List" class="w-pagination-wrapper">
-                  <a href="#" aria-label="Previous Page" class="w-pagination-previous"><svg class="w-pagination-previous-icon" height="12px" width="12px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" transform="translate(0, 1)">
-                      <path fill="none" stroke="currentColor" fill-rule="evenodd" d="M8 10L4 6l4-4"></path>
-                    </svg>
-                    <div class="w-inline-block">Previous</div>
-                  </a>
-                  <a href="#" aria-label="Next Page" class="w-pagination-next button">
-                    <div class="w-inline-block">Next</div><svg class="w-pagination-next-icon" height="12px" width="12px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" transform="translate(0, 1)">
-                      <path fill="none" stroke="currentColor" fill-rule="evenodd" d="M4 2l4 4-4 4"></path>
-                    </svg>
-                  </a>
-                </div>
-              </div>
+              <!--SANITY:caseStudyOthers-->
             </div>
           </div>
         </div>
@@ -283,9 +229,14 @@ margin: 0rem !important;
 `;
 
 export default function Page() {
+  const slots = {
+    caseStudyFeatured: <CaseStudyFeatured />,
+    caseStudyOthers: <CaseStudyOthers />,
+  };
+
   return (
     <WebflowPage bodyClass="" >
-      <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+      <WebflowHtml html={bodyHtml} slots={slots} />
     </WebflowPage>
   );
 }

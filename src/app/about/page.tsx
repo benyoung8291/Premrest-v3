@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
+import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import { TeamGrid } from '@/components/cms/TeamGrid';
 
 export const metadata: Metadata = {
   title: "About",
@@ -212,21 +214,7 @@ margin: 0rem !important;
                   <h2>Meet the team</h2>
                 </div>
               </div>
-              <div class="w-dyn-list">
-                <div role="list" class="grid-4-columns grid-team w-dyn-items">
-                  <div role="listitem" class="w-dyn-item">
-                    <div class="grid-column grid-column-team">
-                      <a href="#" class="team-profile-links w-inline-block"><img src="/images/stringio.jpg-5.webp" loading="lazy" alt="" class="team-profile-image w-dyn-bind-empty">
-                        <h4 id="w-node-_2ffa1b0d-bc3c-75b6-46c4-66976c779820-c09522a7" class="team-profile-headline w-dyn-bind-empty"></h4>
-                        <p id="w-node-_2ffa1b0d-bc3c-75b6-46c4-66976c779822-c09522a7" class="team-profile-title w-dyn-bind-empty"></p>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="w-dyn-empty">
-                  <div>No items found.</div>
-                </div>
-              </div>
+              <!--SANITY:team-->
             </div>
           </div>
         </div>
@@ -242,9 +230,13 @@ margin: 0rem !important;
 `;
 
 export default function Page() {
+  const slots = {
+    team: <TeamGrid />,
+  };
+
   return (
     <WebflowPage bodyClass="" >
-      <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+      <WebflowHtml html={bodyHtml} slots={slots} />
     </WebflowPage>
   );
 }

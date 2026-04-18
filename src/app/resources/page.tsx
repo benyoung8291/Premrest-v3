@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
+import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import { ResourceGrid } from '@/components/cms/ResourceGrid';
 
 export const metadata: Metadata = {
   title: "Resources",
@@ -242,58 +244,7 @@ input {
                       </div>
                     </div>
                     <div class="grid-wrapper">
-                      <div fs-cmsload-mode="pagination" fs-cmsfilter-element="list" fs-cmsload-element="list" class="w-dyn-list">
-                        <div fs-cmsfilter-field="contents" role="list" class="resources-collection w-dyn-items">
-                          <div role="listitem" class="collection-item w-dyn-item">
-                            <div class="content-badges-container">
-                              <div class="content-badge-service">
-                                <h6 fs-cmsfilter-field="*" class="content-service-heading w-dyn-bind-empty"></h6>
-                              </div>
-                              <div class="content-badge-type">
-                                <h6 fs-cmsfilter-field="contents" class="content-type-heading w-dyn-bind-empty"></h6>
-                              </div>
-                            </div>
-                            <div class="image-container"><img src="/images/play-button.png" loading="lazy" alt="" class="webinars-play-button"><img src="/images/play-button.png" loading="lazy" alt="" class="video-play-button"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="resources-featured-image w-dyn-bind-empty"></div>
-                            <div class="resources-container padding-medium">
-                              <h3 fs-cmsfilter-field="*" class="resources-heading w-dyn-bind-empty"></h3>
-                              <p fs-cmsfilter-field="*" class="resources-summary w-dyn-bind-empty"></p>
-                              <a href="#" class="button is-secondary resources-view-button w-button">View resource</a>
-                            </div>
-                            <div class="resources-container padding-medium">
-                              <h3 fs-cmsfilter-field="*" class="resources-heading w-dyn-bind-empty"></h3>
-                              <p fs-cmsfilter-field="*" class="resources-summary w-dyn-bind-empty"></p>
-                              <div class="w-dyn-list">
-                                <div role="list" class="author-resources-wrapper w-dyn-items">
-                                  <div role="listitem" class="collection-item-2 w-dyn-item">
-                                    <div class="resources-author-container"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="resources-author-image w-dyn-bind-empty">
-                                      <div>
-                                        <h6 fs-cmsfilter-field="*" class="resources-author-name w-dyn-bind-empty"></h6>
-                                        <h6 fs-cmsfilter-field="*" class="resources-author-title w-dyn-bind-empty"></h6>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <a href="#" class="button is-secondary resources-view-button w-button">View resource</a>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="w-dyn-empty">
-                          <div>No items found.</div>
-                        </div>
-                        <div role="navigation" aria-label="List" class="w-pagination-wrapper resources-pagination">
-                          <a href="#" aria-label="Previous Page" class="w-pagination-previous button is-secondary"><svg class="w-pagination-previous-icon" height="12px" width="12px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" transform="translate(0, 1)">
-                              <path fill="none" stroke="currentColor" fill-rule="evenodd" d="M8 10L4 6l4-4"></path>
-                            </svg>
-                            <div class="w-inline-block">Previous</div>
-                          </a>
-                          <a href="#" aria-label="Next Page" class="w-pagination-next button is-secondary">
-                            <div class="w-inline-block">Next</div><svg class="w-pagination-next-icon" height="12px" width="12px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" transform="translate(0, 1)">
-                              <path fill="none" stroke="currentColor" fill-rule="evenodd" d="M4 2l4 4-4 4"></path>
-                            </svg>
-                          </a>
-                        </div>
-                      </div>
+                      <!--SANITY:resources-->
                     </div>
                     <div fs-cmsfilter-element="empty" class="filters1_empty">
                       <div class="heading-style-h6">Oops! We’ve hit a flat spot.</div>
@@ -318,9 +269,13 @@ input {
 `;
 
 export default function Page() {
+  const slots = {
+    resources: <ResourceGrid />,
+  };
+
   return (
     <WebflowPage bodyClass="" >
-      <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+      <WebflowHtml html={bodyHtml} slots={slots} />
     </WebflowPage>
   );
 }

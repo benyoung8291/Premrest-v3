@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
+import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
 
 export const metadata: Metadata = {
   title: "ComCork Supply & Installation | Natural Cork Wall Tiles Australia | Premrest",
@@ -210,7 +211,7 @@ margin: 0rem !important;
                 </div>
               </div>
               <div class="nav_block_logo">
-                <a href="/ class="nav_brand w-nav-brand">
+                <a href="/" class="nav_brand w-nav-brand">
                   <div class="logo logo-charcoal w-embed">
                     <!--?xml version="1.0" encoding="UTF-8"?-->
                     <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 223.7671322 34.5399933">
@@ -635,7 +636,7 @@ window.showProfile=function(id){document.querySelectorAll(&#x27;.profile-detail&
 export default function Page() {
   return (
     <WebflowPage bodyClass="" >
-      <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+      <WebflowHtml html={bodyHtml} />
     </WebflowPage>
   );
 }

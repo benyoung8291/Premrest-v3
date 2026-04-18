@@ -34,6 +34,22 @@ const DETAIL_TEMPLATE_MAP: Record<string, string> = {
 // Files to skip entirely (Webflow internals, 404/401 handled separately)
 const SKIP_FILES = new Set(['401.html', '404.html', 'untitled.html']);
 
+// Pages where specific Webflow w-dyn-list sections should be swapped for a
+// <!--SANITY:marker--> placeholder so the generated page can interleave a
+// React component that pulls from Sanity.
+//
+// Selectors are cheerio CSS selectors; the first match is replaced.
+type CmsSwap = { selector: string; marker: string };
+const CMS_SWAPS: Record<string, CmsSwap[]> = {
+  'about.html': [{ selector: '.grid-wrapper-team .w-dyn-list', marker: 'team' }],
+  'case-studies.html': [
+    { selector: '.casestudies-section-feature .w-dyn-list', marker: 'caseStudyFeatured' },
+    { selector: '.casestudies-section-other .w-dyn-list', marker: 'caseStudyOthers' },
+  ],
+  'resources.html': [{ selector: '.w-dyn-list[fs-cmsload-mode="pagination"]', marker: 'resources' }],
+};
+
+
 type PageMeta = {
   title: string;
   description?: string;
@@ -55,9 +71,13 @@ function rewriteAssetPaths(html: string): string {
 
   // Rewrite internal page links: href="foo.html" → href="/foo", href="index.html" → href="/"
   out = out.replace(/href="([^"#?]+)\.html(["#?])/g, (_m, slug: string, tail: string) => {
-    if (slug === 'index') return `href="/${tail === '"' ? '' : tail}`;
     // Leave absolute URLs alone
     if (/^https?:\/\//.test(slug)) return _m;
+    if (slug === 'index') {
+      // tail is either '"' (bare), '#' (has fragment), or '?' (has query).
+      // We want href="/" for bare, or href="/#... / href="/?..." otherwise.
+      return tail === '"' ? 'href="/"' : `href="/${tail}`;
+    }
     return `href="/${slug}${tail}`;
   });
 
@@ -143,7 +163,22 @@ function stripNavAndFooter($: cheerio.CheerioAPI): { navHtml: string; footerHtml
   return { navHtml, footerHtml };
 }
 
-function writePage(route: string, meta: PageMeta, bodyHtml: string, bodyClass: string, dataAttrs: Record<string, string>) {
+// Maps swap marker names to the React component that renders them.
+const SLOT_IMPORTS: Record<string, { from: string; named: string }> = {
+  team: { from: '@/components/cms/TeamGrid', named: 'TeamGrid' },
+  resources: { from: '@/components/cms/ResourceGrid', named: 'ResourceGrid' },
+  caseStudyFeatured: { from: '@/components/cms/CaseStudiesList', named: 'CaseStudyFeatured' },
+  caseStudyOthers: { from: '@/components/cms/CaseStudiesList', named: 'CaseStudyOthers' },
+};
+
+function writePage(
+  route: string,
+  meta: PageMeta,
+  bodyHtml: string,
+  bodyClass: string,
+  dataAttrs: Record<string, string>,
+  usedMarkers: string[],
+) {
   const dir = path.join(APP_DIR, route);
   fs.mkdirSync(dir, { recursive: true });
 
@@ -151,16 +186,31 @@ function writePage(route: string, meta: PageMeta, bodyHtml: string, bodyClass: s
     .map(([k, v]) => `${k}={${JSON.stringify(v)}}`)
     .join(' ');
 
+  const slotImports = usedMarkers
+    .map((m) => SLOT_IMPORTS[m])
+    .filter(Boolean);
+  const importLines = slotImports.map((s) => `import { ${s.named} } from '${s.from}';`).join('\n');
+  const slotsEntries = usedMarkers
+    .map((m) => {
+      const s = SLOT_IMPORTS[m];
+      return s ? `    ${m}: <${s.named} />` : null;
+    })
+    .filter(Boolean)
+    .join(',\n');
+  const slotsProp = slotsEntries ? `\n  const slots = {\n${slotsEntries},\n  };\n` : '';
+  const slotsArg = slotsEntries ? ' slots={slots}' : '';
+
   const src = `import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
-
+import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+${importLines ? importLines + '\n' : ''}
 ${metadataToSource(meta)}
 const bodyHtml = \`${escapeForTemplateLiteral(bodyHtml)}\`;
 
-export default function Page() {
+export default function Page() {${slotsProp}
   return (
     <WebflowPage bodyClass=${JSON.stringify(bodyClass)} ${dataAttrsStr}>
-      <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+      <WebflowHtml html={bodyHtml}${slotsArg} />
     </WebflowPage>
   );
 }
@@ -192,7 +242,7 @@ function resolveRoute(file: string): string | null {
   return file.replace(/\.html$/, '');
 }
 
-function processFile(absPath: string, route: string, captureChrome: boolean): {
+function processFile(absPath: string, route: string, captureChrome: boolean, fileName: string): {
   navHtml?: string;
   footerHtml?: string;
   htmlDataAttrs?: Record<string, string>;
@@ -211,6 +261,16 @@ function processFile(absPath: string, route: string, captureChrome: boolean): {
 
   const { navHtml, footerHtml } = stripNavAndFooter($);
 
+  // Apply configured CMS swaps before serialising the body.
+  const usedMarkers: string[] = [];
+  for (const swap of CMS_SWAPS[fileName] || []) {
+    const el = $(swap.selector).first();
+    if (el.length) {
+      el.replaceWith(`<!--SANITY:${swap.marker}-->`);
+      usedMarkers.push(swap.marker);
+    }
+  }
+
   const bodyEl = $('body').first();
   const bodyClass = bodyEl.attr('class') || '';
   const bodyDataAttrs: Record<string, string> = {};
@@ -220,7 +280,7 @@ function processFile(absPath: string, route: string, captureChrome: boolean): {
 
   const bodyHtml = rewriteAssetPaths(bodyEl.html() || '');
 
-  writePage(route, meta, bodyHtml, bodyClass, bodyDataAttrs);
+  writePage(route, meta, bodyHtml, bodyClass, bodyDataAttrs, usedMarkers);
 
   if (captureChrome) {
     return {
@@ -250,7 +310,7 @@ function main() {
     const abs = path.join(EXPORT_DIR, file);
     // Capture nav/footer from index.html (most representative)
     const capture = !chromeCaptured && file === 'index.html';
-    const r = processFile(abs, route, capture);
+    const r = processFile(abs, route, capture, file);
     if (capture && r.navHtml) {
       navHtml = r.navHtml;
       footerHtml = r.footerHtml || '';
@@ -268,7 +328,7 @@ function main() {
         walkNested(path.join(dir, entry.name), `${prefix}${entry.name}/`);
       } else if (entry.name.endsWith('.html')) {
         const route = `${prefix}${entry.name.replace(/\.html$/, '')}`;
-        processFile(path.join(dir, entry.name), route, false);
+        processFile(path.join(dir, entry.name), route, false, entry.name);
         console.log(`  → /${route}`);
       }
     }

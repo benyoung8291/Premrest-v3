@@ -4,7 +4,7 @@ export const footerHtml = `<section class="global_section_footer">
             <div class="grid_wrapper">
               <div class="grid-4-columns">
                 <div id="w-node-_22174fed-6f0e-2c64-aeba-cd40839aef1e-839aef19" class="grid-column grid-column-footer grid-column-top">
-                  <a href="/ aria-current="page" class="footer_logo_link w-inline-block w--current"><img src="/images/Premrest_Tagline_Charcoal-Orange.svg" loading="lazy" alt="" class="footer_logo"></a>
+                  <a href="/" aria-current="page" class="footer_logo_link w-inline-block w--current"><img src="/images/Premrest_Tagline_Charcoal-Orange.svg" loading="lazy" alt="" class="footer_logo"></a>
                   <div class="footer-social-container">
                     <a href="https://au.linkedin.com/company/premrest" target="_blank" class="footer-social-linkedin-link w-inline-block"><img src="/images/linkedin.png" loading="lazy" alt="" class="footer-social-linkedin"></a>
                     <a href="https://www.instagram.com/premrestau/" target="_blank" class="footer-social-instagram-link w-inline-block"><img src="/images/instagram-1.png" loading="lazy" alt="" class="footer-social-instagram"></a>

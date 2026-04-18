@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
+import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
 
 export const metadata: Metadata = {
   title: "Premrest | Building Managers | Commercial Floor Cleaning & Installs",
@@ -301,7 +302,7 @@ margin: 0rem !important;
 export default function Page() {
   return (
     <WebflowPage bodyClass="" >
-      <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+      <WebflowHtml html={bodyHtml} />
     </WebflowPage>
   );
 }

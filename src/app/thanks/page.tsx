@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
+import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
 
 export const metadata: Metadata = {
   title: "Thank You",
@@ -175,7 +176,7 @@ margin: 0rem !important;
                 <div class="grid-column"><img src="/images/contact-image.svg" alt="" class="utility-page_image">
                   <h1 id="w-node-_1399e347-09ed-a546-19bf-41c53a1694e6-36877f17" class="_404-heading">Thanks, you're all set.</h1>
                   <div id="w-node-_1399e347-09ed-a546-19bf-41c53a1694e8-36877f17" class="_404-text">Our team will respond to your enquiry before the dust settles.</div>
-                  <a id="w-node-_1399e347-09ed-a546-19bf-41c53a1694ea-36877f17" href="/ class="button _404-button w-button">Go back home</a>
+                  <a id="w-node-_1399e347-09ed-a546-19bf-41c53a1694ea-36877f17" href="/" class="button _404-button w-button">Go back home</a>
                 </div>
               </div>
             </div>
@@ -194,7 +195,7 @@ margin: 0rem !important;
 export default function Page() {
   return (
     <WebflowPage bodyClass="" >
-      <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+      <WebflowHtml html={bodyHtml} />
     </WebflowPage>
   );
 }

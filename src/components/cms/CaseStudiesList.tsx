@@ -1,5 +1,5 @@
-import { readClient } from '@/lib/sanity.client';
 import { allProjectsQuery } from '@/lib/queries';
+import { safeFetch } from '@/lib/safeFetch';
 import { urlFor } from '@/lib/sanity.image';
 import type { Image } from 'sanity';
 
@@ -19,7 +19,7 @@ export const revalidate = 60;
  * `.casestudies-section-feature .w-dyn-list`.
  */
 export async function CaseStudyFeatured() {
-  const projects = await readClient.fetch<Project[]>(allProjectsQuery);
+  const projects = await safeFetch<Project[]>(allProjectsQuery, {}, []);
   const p = projects[0];
   if (!p) return null;
 
@@ -90,7 +90,7 @@ export async function CaseStudyFeatured() {
  * "Other case studies" grid — replaces `.casestudies-section-other .w-dyn-list`.
  */
 export async function CaseStudyOthers() {
-  const projects = await readClient.fetch<Project[]>(allProjectsQuery);
+  const projects = await safeFetch<Project[]>(allProjectsQuery, {}, []);
   const rest = projects.slice(1);
   if (rest.length === 0) {
     return (

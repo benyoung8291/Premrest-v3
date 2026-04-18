@@ -1,5 +1,5 @@
-import { readClient } from '@/lib/sanity.client';
 import { allResourcesQuery } from '@/lib/queries';
+import { safeFetch } from '@/lib/safeFetch';
 import { urlFor } from '@/lib/sanity.image';
 import type { Image } from 'sanity';
 
@@ -23,7 +23,7 @@ export const revalidate = 60;
  * resources-heading, etc.) so the design carries over.
  */
 export async function ResourceGrid() {
-  const resources = await readClient.fetch<Resource[]>(allResourcesQuery);
+  const resources = await safeFetch<Resource[]>(allResourcesQuery, {}, []);
 
   return (
     <div className="w-dyn-list">

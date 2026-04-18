@@ -1,5 +1,5 @@
-import { readClient } from '@/lib/sanity.client';
 import { allPeopleQuery } from '@/lib/queries';
+import { safeFetch } from '@/lib/safeFetch';
 import { urlFor } from '@/lib/sanity.image';
 import type { Image } from 'sanity';
 
@@ -18,7 +18,7 @@ export const revalidate = 60;
  * Class names match the export so the Webflow CSS continues to apply.
  */
 export async function TeamGrid() {
-  const people = await readClient.fetch<Person[]>(allPeopleQuery);
+  const people = await safeFetch<Person[]>(allPeopleQuery, {}, []);
 
   return (
     <div className="w-dyn-list">

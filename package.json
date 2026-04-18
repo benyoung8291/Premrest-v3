@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "convert:html": "tsx scripts/convert-html-to-jsx.ts",
-    "import:cms": "tsx scripts/import-csv-to-sanity.ts"
+    "import:cms": "tsx scripts/import-csv-to-sanity.ts",
+    "scrape:resources": "tsx scripts/scrape-resource-content.ts"
   },
   "dependencies": {
     "@portabletext/react": "^3.2.1",

@@ -14,12 +14,16 @@
  * Usage:  npm run import:cms
  */
 import 'dotenv/config';
+import dotenv from 'dotenv';
 import { createClient } from '@sanity/client';
 import { parse } from 'csv-parse/sync';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { JSDOM } from 'jsdom';
+
+// dotenv/config only reads .env; explicitly pull .env.local too.
+dotenv.config({ path: path.resolve(__dirname, '..', '.env.local') });
 
 const CSV_DIR = path.resolve(__dirname, '..', 'csv-exports');
 
@@ -259,7 +263,13 @@ async function importResources() {
     };
     if (row.Category) doc.category = { _type: 'reference', _ref: docId('category', row.Category) };
     if (row.Type) doc.contentType = { _type: 'reference', _ref: docId('contentType', row.Type) };
-    if (row.Author) doc.author = { _type: 'reference', _ref: docId('person', row.Author) };
+
+    const authors = splitMulti(row.Author).map((s) => ({
+      _type: 'reference',
+      _ref: docId('person', s),
+      _key: crypto.randomBytes(6).toString('hex'),
+    }));
+    if (authors.length) doc.authors = authors;
 
     const industries = splitMulti(row.Industries).map((s) => ({
       _type: 'reference',

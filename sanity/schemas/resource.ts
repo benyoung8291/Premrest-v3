@@ -25,7 +25,11 @@ export const resource = defineType({
     defineField({ name: 'video', type: 'url' }),
     defineField({ name: 'category', type: 'reference', to: [{ type: 'category' }] }),
     defineField({ name: 'contentType', type: 'reference', to: [{ type: 'contentType' }] }),
-    defineField({ name: 'author', type: 'reference', to: [{ type: 'person' }] }),
+    defineField({
+      name: 'authors',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'person' }] }],
+    }),
     defineField({
       name: 'industries',
       type: 'array',

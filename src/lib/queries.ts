@@ -10,7 +10,7 @@ export const allResourcesQuery = groq`
     video,
     category->{name, "slug": slug.current, icon},
     contentType->{name, "slug": slug.current},
-    author->{name, "slug": slug.current, photo, title},
+    "authors": authors[]->{name, "slug": slug.current, photo, title},
     "industries": industries[]->{name, "slug": slug.current},
     "tags": tags[]->{name, "slug": slug.current}
   }
@@ -29,7 +29,7 @@ export const resourceBySlugQuery = groq`
     fileCoverImage,
     category->{name, "slug": slug.current, icon},
     contentType->{name, "slug": slug.current},
-    author->{name, "slug": slug.current, photo, title, bio},
+    "authors": authors[]->{name, "slug": slug.current, photo, title, bio},
     "industries": industries[]->{name, "slug": slug.current},
     "tags": tags[]->{name, "slug": slug.current}
   }

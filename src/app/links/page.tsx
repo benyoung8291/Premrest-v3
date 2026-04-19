@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
 import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import { LatestResourceHero } from '@/components/cms/PageBlocks';
 
 export const metadata: Metadata = {
   title: "Links",
@@ -190,34 +191,7 @@ margin: 0rem !important;
                   <h2 id="w-node-d60ec300-754f-a828-411e-232679b75b16-fcaa6bf4">Latest resources</h2>
                 </div>
               </div>
-              <div class="resources-wrapper w-dyn-list">
-                <div role="list" class="w-dyn-items">
-                  <div role="listitem" class="w-dyn-item">
-                    <div class="grid-wrapper grid-column-2-resources">
-                      <div class="grid-column home-resources-column-1">
-                        <div class="home-resources-image-container"><img loading="lazy" src="/images/Hot-Black-Kraft-Heinz_6299-1000x1500.webp" alt="" class="global-resources-image w-dyn-bind-empty"><img loading="lazy" src="/images/Premrest_Scribble_Green.svg" alt="" class="home-resources-scribbles"><img loading="lazy" src="/images/Premrest_Patch_Cream.svg" alt="" class="home-resources-patch"></div>
-                      </div>
-                      <div class="grid-column home-resources-column-2">
-                        <div class="home-resources-container">
-                          <div class="content-badges-container-section">
-                            <div class="content-badge-service">
-                              <h6 fs-cmsfilter-field="*" class="content-service-heading w-dyn-bind-empty"></h6>
-                            </div>
-                            <div class="content-badge-type">
-                              <h6 fs-cmsfilter-field="contents" class="content-type-heading w-dyn-bind-empty"></h6>
-                            </div>
-                          </div>
-                          <h3 class="home-resources-title w-dyn-bind-empty"></h3>
-                          <a id="w-node-_1beb1296-d203-6ba3-01bd-9305fcaa6c05-fcaa6bf4" href="#" class="button is-secondary w-button">Read more</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="w-dyn-empty">
-                  <div>No items found.</div>
-                </div>
-              </div>
+              <!--SANITY:linksLatestResource-->
               <div class="grid-1-column">
                 <div class="grid-column">
                   <a id="w-node-_192880c3-b256-a8ea-2ecd-bcc0f3c05ff4-fcaa6bf4" href="/resources" class="button w-button">View more resources</a>
@@ -314,9 +288,13 @@ margin: 0rem !important;
 `;
 
 export default function Page() {
+  const slots = {
+    linksLatestResource: <LatestResourceHero />,
+  };
+
   return (
     <WebflowPage bodyClass="" >
-      <WebflowHtml html={bodyHtml} />
+      <WebflowHtml html={bodyHtml} slots={slots} />
     </WebflowPage>
   );
 }

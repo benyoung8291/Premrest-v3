@@ -103,6 +103,19 @@ export const resourcesByAuthorQuery = groq`
     | order(coalesce(publishedAt, _createdAt) desc) { ${resourceCardProjection} }
 `;
 
+export const latestResourceByCategoryAndContentTypeQuery = groq`
+  *[_type == "resource" && category->slug.current == $categorySlug && contentType->slug.current == $contentTypeSlug]
+    | order(coalesce(publishedAt, _createdAt) desc)[0] { ${resourceCardProjection} }
+`;
+
+export const peopleByDepartmentQuery = groq`
+  *[_type == "person" && lower(department) == lower($department)]
+    | order(sortOrder asc, name asc) {
+    _id, name, "slug": slug.current, title, photo, department,
+    phone, email, linkedin, displayContactInfo
+  }
+`;
+
 export const allCategorySlugsQuery = groq`*[_type == "category" && defined(slug.current)]{ "slug": slug.current, name, icon }`;
 export const allContentTypeSlugsQuery = groq`*[_type == "contentType" && defined(slug.current)]{ "slug": slug.current, name }`;
 export const allIndustrySlugsQuery = groq`*[_type == "industry" && defined(slug.current)]{ "slug": slug.current, name }`;

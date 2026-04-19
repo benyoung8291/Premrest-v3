@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
 import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import {
+  ExpertsTeamGrid,
+  LatestCleaningWebinarText,
+  LatestCleaningWebinarImage,
+} from '@/components/cms/PageBlocks';
 
 export const metadata: Metadata = {
   title: "Premrest | Commercial Floor CleaningCarpet Cleaning Comparison",
@@ -345,30 +350,7 @@ margin: 0rem !important;
                   <h2 id="w-node-_13a9e2ab-7c72-b5f5-24c4-ae5b17c0da07-00249bd3" class="meet-the-team-heading">Talk to the<br>flooring experts</h2>
                 </div>
                 <div class="grid-column">
-                  <div class="w-dyn-list">
-                    <div role="list" class="grid-3-columns grid-team w-dyn-items">
-                      <div role="listitem" class="w-dyn-item">
-                        <div class="grid-column grid-column-team"><img src="/images/stringio.jpg-5.webp" loading="lazy" alt="" class="team-profile-image w-dyn-bind-empty">
-                          <h4 id="w-node-_2b5f1159-399f-a716-2ae3-41220ff6ad98-00249bd3" class="team-profile-headline w-dyn-bind-empty"></h4>
-                          <p id="w-node-_2b5f1159-399f-a716-2ae3-41220ff6ad99-00249bd3" class="team-profile-title w-dyn-bind-empty"></p>
-                          <div id="w-node-_3e6232a0-bea5-6321-9006-d93916e2bd41-00249bd3" class="experts-contact-container">
-                            <div class="contact-icon-block">
-                              <a href="#" class="w-inline-block"><img src="/images/phone.png" loading="lazy" alt="" class="contact-experts-icon"></a>
-                            </div>
-                            <div class="contact-icon-block">
-                              <a href="#" class="w-inline-block"><img src="/images/mail-advertising.png" loading="lazy" alt="" class="contact-experts-icon"></a>
-                            </div>
-                            <div class="contact-icon-block">
-                              <a href="#" class="w-inline-block"><img src="/images/linkedin_1.png" loading="lazy" alt="" class="contact-experts-icon-li"></a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
-                    </div>
-                  </div>
+                  <!--SANITY:cleaningTeam-->
                 </div>
               </div>
             </div>
@@ -1079,42 +1061,9 @@ margin: 0rem !important;
           <div class="container-large">
             <div class="grid-wrapper resources-grid-wrapper">
               <div class="grid-2-columns-webinar">
-                <div id="w-node-bf04a29b-9a03-35e0-af81-d2b19a62b72a-9a62b725" class="webinar-grid-column w-dyn-list">
-                  <div role="list" class="w-dyn-items">
-                    <div role="listitem" class="w-dyn-item">
-                      <div class="grid-column grid-webinar">
-                        <h2 class="w-dyn-bind-empty"></h2>
-                        <p class="w-dyn-bind-empty"></p>
-                        <a href="#" class="button w-button">View webinar</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="w-dyn-empty">
-                    <div>No items found.</div>
-                  </div>
-                </div>
+                <!--SANITY:cleaningWebinarText-->
                 <div class="grid-column ltf-spacer">
-                  <div class="resources-wrapper w-dyn-list">
-                    <div role="list" class="w-dyn-items">
-                      <div role="listitem" class="w-dyn-item">
-                        <div class="webinar-section-video">
-                          <div class="webinar-badges-container-section">
-                            <div class="content-badge-service is-inverse">
-                              <h6 fs-cmsfilter-field="*" class="content-service-heading is-inverse">Latest Webinar</h6>
-                            </div>
-                          </div>
-                          <a href="#" class="w-inline-block">
-                            <div class="letstalkfacilities-section-image"><img loading="lazy" src="/images/Premrest_Scribble_Green.svg" alt="" class="ltf-resources-scribbles"><img loading="lazy" src="/images/Premrest_Patch_Orange.svg" alt="" class="ltf-resources-patch"><img loading="lazy" src="/images/play-button.png" alt="" class="video-play-button">
-                              <div class="letstalkfacilities-section-overlay"></div><img loading="lazy" height="Auto" alt="" src="/images/DSC03156.webp" class="letstalkfacilities-section-videoimage w-dyn-bind-empty">
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
-                    </div>
-                  </div>
+                  <!--SANITY:cleaningWebinarImage-->
                 </div>
               </div>
             </div>
@@ -1168,9 +1117,15 @@ margin: 0rem !important;
 `;
 
 export default function Page() {
+  const slots = {
+    cleaningTeam: <ExpertsTeamGrid department="Cleaning" />,
+    cleaningWebinarText: <LatestCleaningWebinarText />,
+    cleaningWebinarImage: <LatestCleaningWebinarImage />,
+  };
+
   return (
     <WebflowPage bodyClass="" >
-      <WebflowHtml html={bodyHtml} />
+      <WebflowHtml html={bodyHtml} slots={slots} />
     </WebflowPage>
   );
 }

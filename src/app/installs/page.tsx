@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
 import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import {
+  ExpertsTeamGrid,
+  LatestProjects,
+  LatestResourceHero,
+} from '@/components/cms/PageBlocks';
 
 export const metadata: Metadata = {
   title: "Premrest | Commercial Floor Installs",
@@ -345,30 +350,7 @@ margin: 0rem !important;
                   <h2 id="w-node-c6eb8c58-77d4-66f2-aa74-f6c28bcaebb6-083e3df1" class="meet-the-team-heading">Talk to the<br>flooring experts</h2>
                 </div>
                 <div class="grid-column">
-                  <div class="w-dyn-list">
-                    <div role="list" class="grid-3-columns grid-team w-dyn-items">
-                      <div role="listitem" class="w-dyn-item">
-                        <div class="grid-column grid-column-team"><img src="/images/stringio.jpg-5.webp" loading="lazy" id="w-node-c6eb8c58-77d4-66f2-aa74-f6c28bcaebbd-083e3df1" alt="" class="team-profile-image w-dyn-bind-empty">
-                          <h4 id="w-node-c6eb8c58-77d4-66f2-aa74-f6c28bcaebbe-083e3df1" class="team-profile-headline w-dyn-bind-empty"></h4>
-                          <p id="w-node-c6eb8c58-77d4-66f2-aa74-f6c28bcaebc0-083e3df1" class="team-profile-title w-dyn-bind-empty"></p>
-                          <div id="w-node-_72f34642-5cb7-76dc-52f0-3cb8d9913617-083e3df1" class="experts-contact-container">
-                            <div class="contact-icon-block">
-                              <a href="#" class="w-inline-block"><img src="/images/phone.png" loading="lazy" alt="" class="contact-experts-icon"></a>
-                            </div>
-                            <div class="contact-icon-block">
-                              <a href="#" class="w-inline-block"><img src="/images/mail-advertising.png" loading="lazy" alt="" class="contact-experts-icon"></a>
-                            </div>
-                            <div class="contact-icon-block">
-                              <a href="#" class="w-inline-block"><img src="/images/linkedin_1.png" loading="lazy" alt="" class="contact-experts-icon-li"></a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
-                    </div>
-                  </div>
+                  <!--SANITY:installsTeam-->
                 </div>
               </div>
             </div>
@@ -569,23 +551,7 @@ margin: 0rem !important;
               <div class="grid-column">
                 <h2 id="w-node-_52bc2ced-38b4-9de7-5f79-a384a3ad73c4-a3ad73bf" class="text-light">Latest projects</h2>
               </div>
-              <div class="w-dyn-list">
-                <div role="list" class="projects-collection-list w-dyn-items">
-                  <div role="listitem" class="w-dyn-item">
-                    <div class="grid-column">
-                      <div id="w-node-_52bc2ced-38b4-9de7-5f79-a384a3ad73dd-a3ad73bf" class="installs-project-content grid-column grid-column-installs-project-cards-2"></div>
-                      <div class="installs-project-cards">
-                        <div class="project-installs-images"><img src="/images/DSC03156.webp" loading="lazy" alt="" height="Auto" class="project-installs-image-2 w-dyn-bind-empty"></div>
-                      </div>
-                      <h3 class="project-installs-headline w-dyn-bind-empty"></h3>
-                      <p class="project-installs-subheadline w-dyn-bind-empty"></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="w-dyn-empty">
-                  <div>No items found.</div>
-                </div>
-              </div>
+              <!--SANITY:installsLatestProjects-->
             </div>
           </div>
         </div>
@@ -599,34 +565,7 @@ margin: 0rem !important;
                   <h2 id="w-node-_1b10ee59-1f7a-fd78-274e-e3df1cf9adbe-b3d28626">Latest resources</h2>
                 </div>
               </div>
-              <div class="resources-wrapper w-dyn-list">
-                <div role="list" class="w-dyn-items">
-                  <div role="listitem" class="w-dyn-item">
-                    <div class="grid-wrapper grid-column-2-resources">
-                      <div class="grid-column home-resources-column-1">
-                        <div class="home-resources-image-container"><img loading="lazy" src="/images/Hot-Black-Kraft-Heinz_6299-1000x1500.webp" alt="" class="global-resources-image w-dyn-bind-empty"><img loading="lazy" src="/images/Premrest_Scribble_Green.svg" alt="" class="home-resources-scribbles"><img loading="lazy" src="/images/Premrest_Patch_Cream.svg" alt="" class="home-resources-patch"></div>
-                      </div>
-                      <div class="grid-column home-resources-column-2">
-                        <div class="home-resources-container">
-                          <div class="content-badges-container-section">
-                            <div class="content-badge-service">
-                              <h6 fs-cmsfilter-field="*" class="content-service-heading w-dyn-bind-empty"></h6>
-                            </div>
-                            <div class="content-badge-type">
-                              <h6 fs-cmsfilter-field="contents" class="content-type-heading w-dyn-bind-empty"></h6>
-                            </div>
-                          </div>
-                          <h3 class="home-resources-title w-dyn-bind-empty"></h3>
-                          <a id="w-node-_1b10ee59-1f7a-fd78-274e-e3df1cf9add0-b3d28626" href="#" class="button is-secondary w-button">Read more</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="w-dyn-empty">
-                  <div>No items found.</div>
-                </div>
-              </div>
+              <!--SANITY:installsLatestResource-->
               <div class="grid-1-column">
                 <div class="grid-column">
                   <a id="w-node-_1b10ee59-1f7a-fd78-274e-e3df1cf9add7-b3d28626" href="/resources" class="button w-button">View more resources</a>
@@ -683,9 +622,15 @@ margin: 0rem !important;
 `;
 
 export default function Page() {
+  const slots = {
+    installsTeam: <ExpertsTeamGrid department="Installs" />,
+    installsLatestProjects: <LatestProjects />,
+    installsLatestResource: <LatestResourceHero categorySlug="installs" />,
+  };
+
   return (
     <WebflowPage bodyClass="" >
-      <WebflowHtml html={bodyHtml} />
+      <WebflowHtml html={bodyHtml} slots={slots} />
     </WebflowPage>
   );
 }

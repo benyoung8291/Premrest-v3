@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
 import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import { IndustryResources } from '@/components/cms/IndustryResources';
 
 export const metadata: Metadata = {
   title: "Industries",
@@ -197,19 +198,7 @@ margin: 0rem !important;
                 <div class="grid-column"><img src="/images/commercial-offices.png" loading="lazy" alt="" class="industries-section-icon">
                   <h2>Commercial offices</h2>
                   <p>In commercial offices, first impressions start underfoot. From daily foot traffic to last-minute coffee spills, your floors cop a lot - and if they’re not looked after properly, it shows.<br><br>We use low moisture encapsulation to remove up to 96% of dirt, dust and debris across all different floor types. It’s a smarter, more sustainable clean that improves indoor air quality, eliminates rapid resoiling, and keeps your floors looking better for longer, with less water, less energy, and zero disruption.<br><br>We don’t just show up with a machine. We assess your floor compositions, traffic flow and workspace habits to build a tailored maintenance plan that hits the sweet spot: clean enough to impress, without unnecessary visits or wasted spend.<br><br>And, when it comes to installs, we focus on what matters - fit-for-purpose floors that stack up to the rigours of a busy commercial environment.</p>
-                  <div class="w-dyn-list">
-                    <div role="list" class="w-dyn-items">
-                      <div role="listitem" class="w-dyn-item">
-                        <a href="#" class="resources-industries-link w-inline-block">
-                          <p class="text-size-large resources-industries-headline w-dyn-bind-empty"></p>
-                          <p class="text-size-large resources-industries-text w-dyn-bind-empty"></p>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
-                    </div>
-                  </div>
+                  <!--SANITY:industry_commercial_office-->
                 </div>
               </div>
             </div>
@@ -225,19 +214,7 @@ margin: 0rem !important;
                   <h2>Professional services</h2>
                   <p class="text-size-large professional-services">Legal, Accounting, etc.</p>
                   <p>For high-end firms, polished presentation is everything, and that includes your floors. Whether it’s clients stepping in for a high-stakes meeting or senior partners walking the halls, immaculate flooring reinforces the standard you set: professional, detail-driven, and in control.<br><br>Our low moisture encapsulation method is designed for these environments - quieter than a vacuum, fast-drying, and free from the bulky equipment and long hoses you’d normally expect. That means no disruption, no awkward workarounds, and no downtime. Staff can keep moving, clients can come and go, and business carries on as usual.<br><br>We get that your offices don’t switch off at 5pm. With teams working late and client meetings running back-to-back, we plan around your schedule, cleaning after hours or during low traffic windows to put the prestige in your space, without stepping on toes.</p>
-                  <div class="w-dyn-list">
-                    <div role="list" class="w-dyn-items">
-                      <div role="listitem" class="w-dyn-item">
-                        <a href="#" class="resources-industries-link w-inline-block">
-                          <p class="text-size-large resources-industries-headline w-dyn-bind-empty"></p>
-                          <p class="text-size-large resources-industries-text w-dyn-bind-empty"></p>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
-                    </div>
-                  </div>
+                  <!--SANITY:industry_professional_services-->
                 </div>
                 <div id="w-node-_338748d9-ce14-ef07-08a9-5e3ef2cf3448-97f9acbd" class="grid-column grid-column-2-inverse">
                   <div id="w-node-_338748d9-ce14-ef07-08a9-5e3ef2cf3449-97f9acbd" class="column-image-block"><img src="/images/Premrest_Industries_ProfessionalServices.webp" loading="lazy" sizes="(max-width: 2000px) 100vw, 2000px" srcset="/images/Premrest_Industries_ProfessionalServices-p-500.webp 500w, images/Premrest_Industries_ProfessionalServices-p-800.webp 800w, images/Premrest_Industries_ProfessionalServices-p-1080.webp 1080w, images/Premrest_Industries_ProfessionalServices-p-1600.webp 1600w, images/Premrest_Industries_ProfessionalServices.webp 2000w" alt="" class="section-image"></div>
@@ -258,19 +235,7 @@ margin: 0rem !important;
                 <div class="grid-column"><img src="/images/banking.png" loading="lazy" alt="" class="industries-section-icon">
                   <h2>Banking &amp; insurance</h2>
                   <p>In the finance world, consistency and presentation go hand in hand. From commercial offices to retail spaces, clean, well-maintained flooring signals order, control, and credibility, values your clients expect at every touchpoint.<br><br>Our team understands the security, compliance, and brand standards expected in this industry. We clean discreetly, without disrupting meetings, client visits or day-to-day operations - keeping your space polished and professional, even when things are moving fast.<br><br>And with sustainability high on the agenda for many global banking groups, we help you meet internal ESG goals through cleaning methods that reduce water, energy and waste, without compromising on results. From single sites to national portfolios, we tailor our approach to keep standards high and environmental impact low.</p>
-                  <div class="w-dyn-list">
-                    <div role="list" class="w-dyn-items">
-                      <div role="listitem" class="w-dyn-item">
-                        <a href="#" class="resources-industries-link w-inline-block">
-                          <p class="text-size-large resources-industries-headline w-dyn-bind-empty"></p>
-                          <p class="text-size-large resources-industries-text w-dyn-bind-empty"></p>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
-                    </div>
-                  </div>
+                  <!--SANITY:industry_banking_insurance-->
                 </div>
               </div>
             </div>
@@ -285,19 +250,7 @@ margin: 0rem !important;
                 <div class="grid-column"><img src="/images/education.png" loading="lazy" alt="" class="industries-section-icon">
                   <h2>Education</h2>
                   <p>In schools, TAFEs and universities, floors take a beating. Thousands of feet move through corridors, classrooms, and common areas every day, dragging in dirt, spills, and wear along the way. Clean, safe floors aren’t just about appearance; they impact hygiene, safety, and the learning environment itself.<br><br>We work with education providers nationally to implement proactive floor care that meets the demands of busy academic calendars. Our low-moisture cleaning methods mean faster drying times and minimal disruption, so teaching and learning can continue uninterrupted. And our team is trained to work safely in active school zones.<br><br>Whether you manage one campus or many, we help you stay ahead of wear and tear with a maintenance program that protects your floors - and your reputation.</p>
-                  <div class="w-dyn-list">
-                    <div role="list" class="w-dyn-items">
-                      <div role="listitem" class="w-dyn-item">
-                        <a href="#" class="resources-industries-link w-inline-block">
-                          <p class="text-size-large resources-industries-headline w-dyn-bind-empty"></p>
-                          <p class="text-size-large resources-industries-text w-dyn-bind-empty"></p>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
-                    </div>
-                  </div>
+                  <!--SANITY:industry_education-->
                 </div>
                 <div id="w-node-_6706a924-0234-1252-c312-7604e404d52e-97f9acbd" class="grid-column grid-column-2-inverse">
                   <div id="w-node-_6706a924-0234-1252-c312-7604e404d52f-97f9acbd" class="column-image-block"><img src="/images/Premrest_Industries_Education.webp" loading="lazy" sizes="(max-width: 2000px) 100vw, 2000px" srcset="/images/Premrest_Industries_Education-p-500.webp 500w, images/Premrest_Industries_Education-p-800.webp 800w, images/Premrest_Industries_Education-p-1080.webp 1080w, images/Premrest_Industries_Education-p-1600.webp 1600w, images/Premrest_Industries_Education.webp 2000w" alt="" class="section-image"></div>
@@ -352,19 +305,7 @@ margin: 0rem !important;
                 <div class="grid-column"><img src="/images/health.png" loading="lazy" alt="" class="industries-section-icon">
                   <h2>Health</h2>
                   <p>In healthcare, there’s no room for “near enough.” Floors need to do more than look clean - they need to support hygiene, safety, and the overall standard of care. From GP clinics and dental practices to day surgeries and aged care, every surface plays a part.<br><br>We clean healthcare floors in a way that’s fast, effective, and low-disruption - no sticky residues, no harsh chemical smells, and no bulky gear getting in the way. Whether it’s vinyl, carpet or safety flooring, we get it clean and dry, fast, so your team can stay focused on what matters.<br><br>We work within your compliance requirements, keeping things consistent, safe and up to standard, no matter the scale of your facility. And when it’s time to upgrade or expand, we install flooring that’s fit for purpose, built to last, and made for care-first spaces.</p>
-                  <div class="w-dyn-list">
-                    <div role="list" class="w-dyn-items">
-                      <div role="listitem" class="w-dyn-item">
-                        <a href="#" class="resources-industries-link w-inline-block">
-                          <p class="text-size-large resources-industries-headline w-dyn-bind-empty"></p>
-                          <p class="text-size-large resources-industries-text w-dyn-bind-empty"></p>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
-                    </div>
-                  </div>
+                  <!--SANITY:industry_health-->
                 </div>
               </div>
             </div>
@@ -399,19 +340,7 @@ margin: 0rem !important;
                 <div class="grid-column"><img src="/images/call-centre.png" loading="lazy" alt="" class="industries-section-icon">
                   <h2>24/7 call centres</h2>
                   <p>In a call centre, there’s no “off” switch. People come and go at all hours, which means the floors never really get a break. Chairs roll constantly, drinks get spilled, and over time, that carpet starts to wear the chaos of the job. But with limited windows for cleaning, maintaining standards can feel impossible.<br><br>That’s why we provide round-the-clock floor cleaning programs designed for non-stop operations. Our low moisture encapsulation method means that carpets are dry in under an hour - no soggy fibres, no lingering smells, and no downtime. And, with machines that are quieter than a vacuum, floors get cleaned while business keeps ticking along.<br><br>Whether you run a team of 50 or 500, we’ll build a maintenance plan that keeps your workspace clean, your team focused, and your floors looking sharp - day and night.</p>
-                  <div class="w-dyn-list">
-                    <div role="list" class="w-dyn-items">
-                      <div role="listitem" class="w-dyn-item">
-                        <a href="#" class="resources-industries-link w-inline-block">
-                          <p class="text-size-large resources-industries-headline w-dyn-bind-empty"></p>
-                          <p class="text-size-large resources-industries-text w-dyn-bind-empty"></p>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
-                    </div>
-                  </div>
+                  <!--SANITY:industry_call_centres-->
                 </div>
               </div>
             </div>
@@ -458,9 +387,18 @@ margin: 0rem !important;
 `;
 
 export default function Page() {
+  const slots = {
+    industry_commercial_office: <IndustryResources industrySlug="commercial-office" />,
+    industry_professional_services: <IndustryResources industrySlug="professional-services" />,
+    industry_banking_insurance: <IndustryResources industrySlug="banking-insurance" />,
+    industry_education: <IndustryResources industrySlug="education" />,
+    industry_health: <IndustryResources industrySlug="health" />,
+    industry_call_centres: <IndustryResources industrySlug="24-7-call-centres" />,
+  };
+
   return (
     <WebflowPage bodyClass="" >
-      <WebflowHtml html={bodyHtml} />
+      <WebflowHtml html={bodyHtml} slots={slots} />
     </WebflowPage>
   );
 }

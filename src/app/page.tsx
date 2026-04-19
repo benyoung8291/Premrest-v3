@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
 import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import { HomeLatestLTFEpisode } from '@/components/cms/PageBlocks';
 
 export const metadata: Metadata = {
   title: "Premrest - Beautiful Flooring | Commercial Floor Experts",
@@ -440,31 +441,7 @@ margin: 0rem !important;
                   <a href="/lets-talk-facilities" class="button is-secondary is-inverse podcast-home-button w-button">View podcast</a>
                 </div>
                 <div class="grid-column ltf-spacer">
-                  <div class="resources-wrapper w-dyn-list">
-                    <div role="list" class="w-dyn-items">
-                      <div role="listitem" class="w-dyn-item">
-                        <div class="letstalkfacilities-section-video">
-                          <div class="ltf-badges-container-section">
-                            <div class="content-badge-service">
-                              <h6 fs-cmsfilter-field="*" class="content-service-heading">Latest episode</h6>
-                            </div>
-                          </div>
-                          <a href="#" class="w-inline-block">
-                            <div class="letstalkfacilities-section-image"><img loading="lazy" src="/images/Premrest_Scribble_Green.svg" alt="" class="ltf-resources-scribbles"><img loading="lazy" src="/images/Premrest_Patch_Cream.svg" alt="" class="ltf-resources-patch"><img src="/images/play-button.png" loading="lazy" alt="" class="video-play-button">
-                              <div class="letstalkfacilities-section-overlay"></div><img src="/images/DSC03156.webp" loading="lazy" alt="" height="Auto" class="letstalkfacilities-section-videoimage w-dyn-bind-empty">
-                            </div>
-                          </a>
-                          <div class="letstalkfacilities-section-content grid-column grid-column-services-cards">
-                            <h3 class="ltf-section-headline w-dyn-bind-empty"></h3>
-                            <p class="ltf-section-subheadline w-dyn-bind-empty"></p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
-                    </div>
-                  </div>
+                  <!--SANITY:homeLtfLatest-->
                 </div>
               </div>
             </div>
@@ -494,9 +471,13 @@ margin: 0rem !important;
 `;
 
 export default function Page() {
+  const slots = {
+    homeLtfLatest: <HomeLatestLTFEpisode />,
+  };
+
   return (
     <WebflowPage bodyClass="" >
-      <WebflowHtml html={bodyHtml} />
+      <WebflowHtml html={bodyHtml} slots={slots} />
     </WebflowPage>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
 import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import { ResourcePodcastImage } from '@/components/cms/PageBlocks';
 
 export const metadata: Metadata = {
   title: "Dental Practices",
@@ -249,22 +250,7 @@ margin: 0rem !important;
                 <a href="/resources/the-truth-about-floor-maintenance-in-dental-practices" class="button w-button">View podcast</a>
               </div>
               <div class="grid-column ltf-spacer">
-                <div class="resources-wrapper w-dyn-list">
-                  <div role="list" class="w-dyn-items">
-                    <div role="listitem" class="w-dyn-item">
-                      <div class="webinar-section-video">
-                        <a href="#" class="w-inline-block">
-                          <div class="letstalkfacilities-section-image"><img loading="lazy" src="/images/Premrest_Scribble_Green.svg" alt="" class="ltf-resources-scribbles"><img loading="lazy" src="/images/Premrest_Patch_Orange.svg" alt="" class="ltf-resources-patch"><img loading="lazy" src="/images/play-button.png" alt="" class="video-play-button">
-                            <div class="letstalkfacilities-section-overlay"></div><img loading="lazy" height="Auto" alt="" src="/images/DSC03156.webp" class="letstalkfacilities-section-videoimage w-dyn-bind-empty">
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="w-dyn-empty">
-                    <div>No items found.</div>
-                  </div>
-                </div>
+                <!--SANITY:dentalPodcastImage-->
               </div>
             </div>
             <div class="grid-3-columns">
@@ -331,9 +317,13 @@ margin: 0rem !important;
 `;
 
 export default function Page() {
+  const slots = {
+    dentalPodcastImage: <ResourcePodcastImage slug="the-truth-about-floor-maintenance-in-dental-practices" />,
+  };
+
   return (
     <WebflowPage bodyClass="" >
-      <WebflowHtml html={bodyHtml} />
+      <WebflowHtml html={bodyHtml} slots={slots} />
     </WebflowPage>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
 import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import { ProjectsGrid } from '@/components/cms/ProjectsGrid';
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -187,21 +188,7 @@ margin: 0rem !important;
         <div class="padding-global padding-section-large">
           <div class="container-large">
             <div class="grid-wrapper">
-              <div class="w-dyn-list">
-                <div role="list" class="projects-collection w-dyn-items">
-                  <div role="listitem" class="collection-item w-dyn-item">
-                    <a href="#" class="projects-link w-inline-block"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="projects-featured-image w-dyn-bind-empty">
-                      <div class="projects-container padding-medium">
-                        <h3 class="projects-heading w-dyn-bind-empty"></h3>
-                        <p class="projects-summary w-dyn-bind-empty"></p>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-                <div class="w-dyn-empty">
-                  <div>No items found.</div>
-                </div>
-              </div>
+              <!--SANITY:projects-->
             </div>
           </div>
         </div>
@@ -217,9 +204,13 @@ margin: 0rem !important;
 `;
 
 export default function Page() {
+  const slots = {
+    projects: <ProjectsGrid />,
+  };
+
   return (
     <WebflowPage bodyClass="" >
-      <WebflowHtml html={bodyHtml} />
+      <WebflowHtml html={bodyHtml} slots={slots} />
     </WebflowPage>
   );
 }

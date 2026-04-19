@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { WebflowPage } from '@/components/webflow-chrome/WebflowPage';
 import { WebflowHtml } from '@/components/webflow-chrome/WebflowHtml';
+import { PodcastLatestEpisode, PodcastEpisodesGrid } from '@/components/cms/PodcastSeries';
 
 export const metadata: Metadata = {
   title: "Let's Talk Facilities",
@@ -192,34 +193,7 @@ margin: 0rem !important;
       <div class="ltf-section-latestepisode">
         <div class="padding-global padding-section-large padding-section-large-bottom">
           <div class="container-large">
-            <div class="resources-wrapper w-dyn-list">
-              <div role="list" class="w-dyn-items">
-                <div role="listitem" class="w-dyn-item">
-                  <div class="grid-2-columns-ltf">
-                    <div data-w-id="52f2338f-f317-b6a9-8cc7-66b8730dcbd4" class="grid-column">
-                      <div class="ltf-badge">
-                        <div class="content-badge">
-                          <h6 fs-cmsfilter-field="*" class="content-service">Latest episode</h6>
-                        </div>
-                      </div>
-                      <h2 class="ltf-latestepisode-headline w-dyn-bind-empty"></h2>
-                      <p class="ltf-latestepisode-text w-dyn-bind-empty"></p>
-                    </div>
-                    <div id="w-node-_52f2338f-f317-b6a9-8cc7-66b8730dcbd9-5e3a4737" data-w-id="52f2338f-f317-b6a9-8cc7-66b8730dcbd9" class="letstalkfacilities-section-video grid-column-2-inverse">
-                      <a href="#" class="w-inline-block">
-                        <div class="letstalkfacilities-section-image"><img loading="lazy" src="/images/Premrest_Scribble_Green.svg" alt="" class="ltf-section-scribbles"><img loading="lazy" src="/images/Premrest_Patch_Blue.svg" alt="" class="ltf-section-patch"><img loading="lazy" src="/images/play-button.png" alt="" class="video-play-button">
-                          <div class="letstalkfacilities-section-overlay"></div><img loading="lazy" height="Auto" alt="" src="/images/DSC03156.webp" class="letstalkfacilities-section-videoimage w-dyn-bind-empty">
-                        </div>
-                      </a>
-                      <div class="letstalkfacilities-section-content grid-column grid-column-services-cards"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="w-dyn-empty">
-                <div>No items found.</div>
-              </div>
-            </div>
+            <!--SANITY:ltfLatest-->
           </div>
         </div>
       </div>
@@ -229,42 +203,7 @@ margin: 0rem !important;
             <div class="grid-wrapper">
               <div class="grid-1-column">
                 <div class="grid-wrapper">
-                  <div fs-cmsfilter-element="list" class="collection-list-wrapper w-dyn-list">
-                    <div fs-cmsfilter-field="contents" role="list" class="podcasts-collection w-dyn-items">
-                      <div role="listitem" class="collection-item w-dyn-item">
-                        <a href="#" class="link-block-4 w-inline-block">
-                          <div class="content-badges-container">
-                            <div class="content-badge-service">
-                              <h6 fs-cmsfilter-field="*" class="content-service-heading w-dyn-bind-empty"></h6>
-                            </div>
-                            <div class="content-badge-type">
-                              <h6 fs-cmsfilter-field="contents" class="content-type-heading w-dyn-bind-empty"></h6>
-                            </div>
-                          </div>
-                          <div class="image-container"><img loading="lazy" src="/images/play-button.png" alt="" class="video-play-button"><img loading="lazy" src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" alt="" class="podcasts-featured-image w-dyn-bind-empty"></div>
-                          <div class="resources-container padding-medium">
-                            <h3 fs-cmsfilter-field="*" class="podcasts-heading w-dyn-bind-empty"></h3>
-                            <p fs-cmsfilter-field="*" class="podcasts-summary w-dyn-bind-empty"></p>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="w-dyn-empty">
-                      <div>No items found.</div>
-                    </div>
-                    <div role="navigation" aria-label="List" class="w-pagination-wrapper resources-pagination">
-                      <a href="#" aria-label="Previous Page" class="w-pagination-previous button is-secondary"><svg class="w-pagination-previous-icon" height="12px" width="12px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" transform="translate(0, 1)">
-                          <path fill="none" stroke="currentColor" fill-rule="evenodd" d="M8 10L4 6l4-4"></path>
-                        </svg>
-                        <div class="w-inline-block">Previous</div>
-                      </a>
-                      <a href="#" aria-label="Next Page" class="w-pagination-next button is-secondary">
-                        <div class="w-inline-block">Next</div><svg class="w-pagination-next-icon" height="12px" width="12px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" transform="translate(0, 1)">
-                          <path fill="none" stroke="currentColor" fill-rule="evenodd" d="M4 2l4 4-4 4"></path>
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
+                  <!--SANITY:ltfEpisodes-->
                 </div>
               </div>
             </div>
@@ -282,9 +221,20 @@ margin: 0rem !important;
 `;
 
 export default function Page() {
+  const slots = {
+    ltfLatest: (
+      <PodcastLatestEpisode
+        tagSlug="lets-talk-facilities"
+        headlineClass="ltf-latestepisode-headline"
+        textClass="ltf-latestepisode-text"
+      />
+    ),
+    ltfEpisodes: <PodcastEpisodesGrid tagSlug="lets-talk-facilities" />,
+  };
+
   return (
     <WebflowPage bodyClass="" >
-      <WebflowHtml html={bodyHtml} />
+      <WebflowHtml html={bodyHtml} slots={slots} />
     </WebflowPage>
   );
 }
